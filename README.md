@@ -98,3 +98,73 @@ method中的index和time选项可以使插值线性地依赖索引，即插值�
 #### （b）limit_direction表示插值方向，可选forward,backward,both，默认前向
 也就是根据前面还是后面的值来进行插值填充
 #### （c）limit_area表示插值区域，可选inside,outside，默认None
+
+# 7.文本数据
+## 一、string类型的性质
+### 1. string与object的区别
+### 2. string类型的转换
+如果将一个其他类型的容器直接转换string类型可能会出错。正确的方法是分两部转换，先转为str型object，在转为string类型。eg：pd.Series([1,'1.']).astype('str').astype('string').
+## 二、拆分与拼接
+### 1. str.split方法
+#### (a）分割符与str的位置元素选取
+根据某一个元素分割，默认为空格.
+
+这里需要注意split后的类型是object，因为现在Series中的元素已经不是string，而包含了list，且string类型只能含有字符串
+对于str方法可以进行元素的选择，如果该单元格元素是列表，那么str[i]表示取出第i个元素，如果是单个元素，则先把元素转为列表在取出.
+
+#### （b）其他参数
+expand参数控制了是否将列拆开，n参数代表最多分割多少次
+
+### 2. str.cat方法
+#### (a）不同对象的拼接模式
+cat方法对于不同对象的作用结果并不相同，其中的对象包括：单列、双列、多列.
+
+- 1)对于单个Series而言，就是指所有的元素进行字符合并为一个字符串.
+
+其中可选sep分隔符参数，和缺失值替代字符na_rep参数
+
+- 2)对于两个Series合并而言，是对应索引的元素进行合并
+
+同样也有相应参数，需要注意的是两个缺失值会被同时替换
+
+- 3）多列拼接可以分为表的拼接和多Series拼接
+
+#### （b）cat中的索引对齐
+当前版本中，如果两边合并的索引不相同且未指定join参数，默认为左连接，设置join='left
+## 三、替换
+广义上的替换，就是指str.replace函数的应用，fillna是针对缺失值的替换，上一章已经提及。提到替换，就不可避免地接触到正则表达式.
+### 1. str.replace的常见用法
+### 2. 子组与函数替换
+### 3. 关于str.replace的注意事项
+str.replace针对的是object类型或string类型，默认是以正则表达式为操作，目前暂时不支持DataFrame上使用。
+replace针对的是任意类型的序列或数据框，如果要以正则表达式替换，需要设置regex=True，该方法通过字典可支持多列替换
+但现在由于string类型的初步引入，用法上出现了一些问题，这些issue有望在以后的版本中修复
+#### （a）str.replace赋值参数不得为pd.NA
+#### （b）对于string类型Series，在使用replace函数时不能使用正则表达式替换
+#### （c）string类型序列如果存在缺失值，不能使用replace替换
+**综上，概况的说，除非需要赋值元素为缺失值（转为object再转回来），否则请使用str.replace方法**
+
+## 四、子串匹配与提取
+### 1. str.extract方法
+#### （a）常见用法
+#### （b）expand参数（默认为True）
+对于一个子组的Series，如果expand设置为False，则返回Series，若大于一个子组，则expand参数无效，全部返回DataFrame。
+
+对于一个子组的Index，如果expand设置为False，则返回提取后的Index，若大于一个子组且expand为False，报错。
+### 2. str.extractall方法
+与extract只匹配第一个符合条件的表达式不同，extractall会找出所有符合条件的字符串，并建立多级索引（即使只找到一个。
+### 3. str.contains和str.match 
+前者的作用为检测是否包含某种正则模式。
+
+str.match与其区别在于，match依赖于python的re.match，检测内容为是否从头开始包含该正则模式。
+
+## 五、常用字符串方法
+### 1. 过滤型方法
+#### （a）str.strip
+常用于过滤空格
+#### （b）str.lower和str.upper
+#### （c）str.swapcase和str.capitalize
+分别表示交换字母大小写和大写首字母
+
+### 2. isnumeric方法
+检查每一位是否都是数字。
