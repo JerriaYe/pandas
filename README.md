@@ -135,6 +135,7 @@ cat方法对于不同对象的作用结果并不相同，其中的对象包括�
 广义上的替换，就是指str.replace函数的应用，fillna是针对缺失值的替换，上一章已经提及。提到替换，就不可避免地接触到正则表达式.
 ### 1. str.replace的常见用法
 ### 2. 子组与函数替换
+利用?P<....>表达式可以对子组命名调用
 ### 3. 关于str.replace的注意事项
 str.replace针对的是object类型或string类型，默认是以正则表达式为操作，目前暂时不支持DataFrame上使用。
 replace针对的是任意类型的序列或数据框，如果要以正则表达式替换，需要设置regex=True，该方法通过字典可支持多列替换
@@ -147,24 +148,32 @@ replace针对的是任意类型的序列或数据框，如果要以正则表达�
 ## 四、子串匹配与提取
 ### 1. str.extract方法
 #### （a）常见用法
+使用子组名作为列名
+
+利用?正则标记选择部分提取
 #### （b）expand参数（默认为True）
 对于一个子组的Series，如果expand设置为False，则返回Series，若大于一个子组，则expand参数无效，全部返回DataFrame。
 
 对于一个子组的Index，如果expand设置为False，则返回提取后的Index，若大于一个子组且expand为False，报错。
 ### 2. str.extractall方法
 与extract只匹配第一个符合条件的表达式不同，extractall会找出所有符合条件的字符串，并建立多级索引（即使只找到一个。
+
+如果想查看第i层匹配，可使用xs方法。
+
+s = pd.Series(["a1a2", "b1b2", "c1c2"], index=["A", "B", "C"],dtype="string")
+s.str.extractall(two_groups).xs(1,level='match')
 ### 3. str.contains和str.match 
 前者的作用为检测是否包含某种正则模式。
 
-str.match与其区别在于，match依赖于python的re.match，检测内容为是否从头开始包含该正则模式。
+str.match与其区别在于，match依赖于python的re.match，检测内容为是否**从头**开始包含该正则模式。
 
 ## 五、常用字符串方法
 ### 1. 过滤型方法
 #### （a）str.strip
 常用于过滤空格
-#### （b）str.lower和str.upper
+#### （b）str.lower和str.upper 将大写转小写和小写转大写
 #### （c）str.swapcase和str.capitalize
 分别表示交换字母大小写和大写首字母
 
 ### 2. isnumeric方法
-检查每一位是否都是数字。
+检查每一位是否都是数字。 判断是否是整数？带有小数在判断时候就为False？
