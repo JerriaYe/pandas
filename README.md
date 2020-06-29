@@ -185,6 +185,9 @@ str.match与其区别在于，match依赖于python的re.match，检测内容为�
 #### （b）对DataFrame指定类型创建
 #### （c）利用内置Categorical类型创建
 #### （d）利用cut函数创建
+默认使用区间类型为标签：pd.cut(np.random.randint(0,60,5), [0,10,30,60])
+
+可指定字符为标签：pd.cut(np.random.randint(0,60,5), [0,10,30,60], right=False, labels=['0-10','10-30','30-60'])
 ### 2. 分类变量的结构
 一个分类变量包括三个部分，元素值（values）、分类类别（categories）、是否有序（order）
 从上面可以看出，使用cut函数创建的分类变量默认为有序分类变量
