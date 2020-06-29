@@ -206,7 +206,7 @@ str.match与其区别在于，match依赖于python的re.match，检测内容为�
 #### （a）一般来说会将一个序列转为有序变量，可以利用as_ordered方法
 退化为无序变量，只需要使用as_unordered
 #### （b）利用set_categories方法中的order参数
-#### #### (c）利用reorder_categories方法
+#### (c）利用reorder_categories方法
 这个方法的特点在于，新设置的分类必须与原分类为同一集合
 ### 2. 排序
 ## 三、分类变量的比较操作
