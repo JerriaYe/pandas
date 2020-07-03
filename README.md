@@ -1,6 +1,7 @@
 # pandas
 let us learn pandas easily and happily~
 
+将每章重要的点都总结了放在README当中，10.final是关于这几章的三个综合练习，分别是端午粽子购买数据、墨尔本温度数据以及摩拜单车骑行数据等等
 # 6.缺失数据
 ## 一、缺失观测及其类型
 ### 1.了解缺失信息 
